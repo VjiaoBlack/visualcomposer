@@ -2,7 +2,7 @@ window.onload = function setup() {
     var row = document.createElement("tr");
     var cell = document.createElement("td");
 
-    cell.setAttribute("class","tile");
+
 
     var rowid;
     var cellid;
@@ -22,6 +22,9 @@ window.onload = function setup() {
             cell.setAttribute("id",cellid);
             console.log("now doing: ".concat(cellid));
             document.getElementById(rowid).appendChild(cell);
+            cell = document.createElement("td");
+            cell.setAttribute("class","tile");
         }
+        row = document.createElement("tr");
     }
 }
