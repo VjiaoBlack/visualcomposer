@@ -1,0 +1,47 @@
+html {
+
+}
+
+body {
+    background-color: black;
+}
+
+h1, h2, h3, h4, h5, h6, p, em, strong{
+    color: white;
+    font-family: sans-serif;
+}
+
+div, table, tr, td {
+    border-width: 1px;
+    border-color: white;
+    border-style: solid;
+}
+
+.tile {
+    height: 48px;
+    width: 48px;
+}
+
+.off {
+    background-color: red;
+}
+
+.on {
+    background-color: blue;
+}
+
+#matrix-holder {
+/*    width: 600px;
+    height: 600px;*/
+    float: left;
+    margin-left: 60px;
+    margin-bottom: 120px;
+}
+
+#options {
+    width: 300px;
+    height: 600px;
+    float: right;
+    margin-right: 60px;
+    margin-bottom: 120px;
+}
