@@ -1,6 +1,6 @@
 
 var _running = true;
-var intervalId = setInterval(game_loop, 1000/FPS);
+var intervalId; // the variable that holds the game loop mechanism ?
 var FPS = 50;
 
 var ROWS = 8;
@@ -10,7 +10,7 @@ var prev_col = 7;
 var ms = 0;
 var oldms = 0;
 
-// var tiles = new Array();
+var tiles = new Array();
 var tone = new Array();
 
 window.onload = function setup() {
@@ -33,6 +33,13 @@ window.onload = function setup() {
     // full row id example: row|3
     // full cell id example: cell|3,3
 
+    for (var r = 0; r < ROWS; r++) {
+        tiles[r] = new Array();
+        for (var c = 0; c < COLS; c++) {
+            tiles[r][c] = false;
+        }
+    }
+
 
     for (var r = 0; r < ROWS; r++) {
         rstring = r.toString();
@@ -41,35 +48,50 @@ window.onload = function setup() {
         document.getElementById("matrix-holder").appendChild(row);
         // tiles[r] = new Array();
         for (var c = 0; c < COLS; c++) {
-            cellid = "cell|".concat(r.toString()).concat(",").concat(c.toString());
-            cell.setAttribute("id",cellid);
-            document.getElementById(rowid).appendChild(cell);
-            cell = document.createElement("td");
-            cell.setAttribute("class","tile off");
-
             // tiles[r][c] = false; // initializes tile to not pressed
+            cellid = "cell|".concat(r.toString()).concat(",").concat(c.toString());
+            cell = document.createElement("td");
+
+            cell.setAttribute("id",cellid);
+            cell.setAttribute("class","tile off");
+            cell.onclick = function() {
+                alert(r.toString().concat(c.toString()));
+                var row = r;
+                var col = c;
+                alert(tiles[row][col]);
+                // if (tiles[r][c]) {
+                //     tiles[r][c] = false;
+                // } else {
+                //     tiles[r][c] = true;
+                // }
+            }
+
+            document.getElementById(rowid).appendChild(cell);
+
         }
         row = document.createElement("tr");
     }
 
+    // starts game loop after everything is initialized.
+    intervalId = setInterval(game_loop, 1000/FPS);
 }
 
-function game_loop() {
+function game_loop() { // loops through each row (tile) in cur_col
     var date = new Date();
     ms = date.getTime();
 
     if (ms - oldms >= 250) {
         for (var r = 0; r < ROWS; r++) {
             var cur_tile = document.getElementById("cell|".concat(r.toString()).concat(",").concat(cur_col.toString()));
-            cur_tile.setAttribute("class","on tile");
-            document.getElementById("cell|".concat(r.toString()).concat(",").concat(cur_col.toString())).setAttribute("class","tile on");
-            document.getElementById("cell|".concat(r.toString()).concat(",").concat(prev_col.toString())).setAttribute("class","tile off");
-            console.log(cur_tile.getAttribute("class"));
-            if (cur_tile.getAttribute("")) {
-                T("perc", {r:500}, tone[cur_col]).on("ended", function() {
+            if (tiles[r][cur_col]) {
+                cur_tile.setAttribute("class","on tile");
+                T("perc", {r:500}, tone[r]).on("ended", function() {
                     this.pause();
                 }).bang().play();
+
             }
+            // document.getElementById("cell|".concat(r.toString()).concat(",").concat(cur_col.toString())).setAttribute("class","tile on");
+            document.getElementById("cell|".concat(r.toString()).concat(",").concat(prev_col.toString())).setAttribute("class","tile off");
         }
         oldms = ms;
         prev_col = cur_col;
