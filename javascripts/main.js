@@ -14,14 +14,14 @@ var tiles = new Array();
 var tone = new Array();
 
 window.onload = function setup() {
-    tone[0] = T("sin", {freq: 523.25, mul:0.06});
-    tone[1] = T("sin", {freq: 587.33, mul:0.06});
-    tone[2] = T("sin", {freq: 659.25, mul:0.06});
-    tone[3] = T("sin", {freq: 698.46, mul:0.06});
-    tone[4] = T("sin", {freq: 783.99, mul:0.06});
-    tone[5] = T("sin", {freq: 880.00, mul:0.06});
-    tone[6] = T("sin", {freq: 987.77, mul:0.06});
-    tone[7] = T("sin", {freq:1046.50, mul:0.06});
+    tone[7] = T("sin", {freq: 523.25, mul:0.06});
+    tone[6] = T("sin", {freq: 587.33, mul:0.06});
+    tone[5] = T("sin", {freq: 659.25, mul:0.06});
+    tone[4] = T("sin", {freq: 698.46, mul:0.06});
+    tone[3] = T("sin", {freq: 783.99, mul:0.06});
+    tone[2] = T("sin", {freq: 880.00, mul:0.06});
+    tone[1] = T("sin", {freq: 987.77, mul:0.06});
+    tone[0] = T("sin", {freq:1046.50, mul:0.06});
 
     var row = document.createElement("tr");
     var cell = document.createElement("td");
@@ -40,7 +40,6 @@ window.onload = function setup() {
         }
     }
 
-
     for (var r = 0; r < ROWS; r++) {
         rstring = r.toString();
         rowid = "row|".concat(r.toString());
@@ -54,16 +53,13 @@ window.onload = function setup() {
 
             cell.setAttribute("id",cellid);
             cell.setAttribute("class","tile off");
-            cell.onclick = function() {
-                alert(r.toString().concat(c.toString()));
-                var row = r;
-                var col = c;
-                alert(tiles[row][col]);
-                // if (tiles[r][c]) {
-                //     tiles[r][c] = false;
-                // } else {
-                //     tiles[r][c] = true;
-                // }
+            cell.onclick = function(event) {
+                var coords = parse_cell_id(event.target.getAttribute("id"));
+                if (tiles[coords[0]][coords[1]]) {
+                    tiles[coords[0]][coords[1]] = false;
+                } else {
+                    tiles[coords[0]][coords[1]] = true;
+                }
             }
 
             document.getElementById(rowid).appendChild(cell);
@@ -101,5 +97,10 @@ function game_loop() { // loops through each row (tile) in cur_col
             prev_col = 7;
         }
     }
-
 }
+
+function parse_cell_id(cell_id) {
+    var coords = cell_id.split("|")[1];
+    return coords.split(",");
+}
+
